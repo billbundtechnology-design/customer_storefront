@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { demoApi } from "@/lib/demo-api";
 import { catalog as seedCatalog, formatNaira, Listing, ListingKind } from "@/lib/catalog";
 
@@ -28,7 +29,7 @@ const itemGradients: Record<string, string> = {
 
 function ListingVisual({ listing, large = false }: { listing: Listing; large?: boolean }) {
   return <div className={`listing-visual ${itemGradients[listing.visual]} ${large ? "large" : ""}`}>
-    <span className="visual-stamp">{listing.kind === "venue" ? "A PLACE TO GATHER" : listing.kind === "planning" ? "MADE TO FEEL LIKE YOU" : "THE RENTOS EDIT"}</span>
+    <span className="visual-stamp">{listing.kind === "venue" ? "A PLACE TO GATHER" : listing.kind === "planning" ? "MADE TO FEEL LIKE YOU" : "THE HSEVENTS EDIT"}</span>
     <div className={`visual-art art-${listing.visual}`} aria-hidden="true">
       {listing.visual === "chairs" && <><i /><i /><i /><i /></>}
       {listing.visual === "tables" && <><i /><i /><i /></>}
@@ -136,9 +137,9 @@ export default function Storefront() {
     : visibleListings;
 
   return <main>
-    <div className="announcement"><span>Thoughtful celebrations start here.</span><span className="announcement-right">Locally loved in Lagos <i>✳</i></span></div>
+    <div className="announcement"><span>Thoughtful celebrations start here.</span><a className="announcement-right" href="#contact">Planning something in Lagos? Let’s talk <i>↗</i></a></div>
     <header className="site-header">
-      <a className="wordmark" href="#" aria-label="Rentos Events home"><span className="logo-mark">r<span>.</span></span><span>rentos<small>EVENTS & RENTALS</small></span></a>
+      <a className="wordmark" href="#" aria-label="HSEvents home"><Image className="wordmark-logo" src="/logo.jpeg" alt="" width={48} height={48} priority /><span>HSEvents<small>EVENTS & RENTALS</small></span></a>
       <button className="mobile-nav-toggle" aria-label="Toggle menu" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? "×" : "☰"}</button>
       <nav className={`customer-nav ${mobileOpen ? "open" : ""}`} aria-label="Customer navigation">
         <button onClick={() => browse("rental")}>Rentals</button>
@@ -150,24 +151,15 @@ export default function Storefront() {
     </header>
 
     <section className="hero">
-      <div className="hero-copy"><div className="eyebrow"><span /> THE GOOD TIMES START WITH A PLAN</div>
-        <h1>Make room<br />for the <em>moments.</em></h1>
-        <p>Beautiful things, lovely spaces, and a little help pulling it all together. For the celebrations that feel like you.</p>
-        <div className="hero-links"><button onClick={() => browse("rental")}>Explore the collection <span>↗</span></button><span className="hero-note">Thoughtfully gathered in Lagos, Nigeria</span></div>
+      <div className="hero-copy"><div className="eyebrow"><span /> RENTALS · VENUES · EVENT PLANNING</div>
+        <h1>Your event,<br /><em>beautifully</em><br />sorted.</h1>
+        <p>From the chairs and tables to the perfect space and finishing touches, find what you need for your celebration in Lagos.</p>
+        <div className="hero-links"><button onClick={() => browse("rental")}>Browse event rentals <span>↗</span></button><button className="hero-secondary" onClick={() => { setBookingOpen(true); setSubmitted(false); }}>Plan an event with us</button></div>
+        <div className="hero-highlights"><span><i>01</i> Prices in Nigerian naira</span><span><i>02</i> Availability confirmed with you</span></div>
       </div>
       <div className="hero-art">
-        <div className="hero-sun" />
-        <div className="hero-scene">
-          <div className="scene-arch"><div className="arch-inner" /></div>
-          <div className="scene-leaves leaves-left"><i /><i /><i /><i /><i /></div>
-          <div className="scene-leaves leaves-right"><i /><i /><i /><i /></div>
-          <div className="scene-table"><i className="table-top" /><i className="table-leg" /><i className="vase" /><i className="flower flower-one" /><i className="flower flower-two" /><i className="flower flower-three" /></div>
-          <div className="scene-chair chair-left"><i /><b /></div>
-          <div className="scene-chair chair-right"><i /><b /></div>
-          <div className="scene-candle candle-one" /><div className="scene-candle candle-two" />
-        </div>
-        <div className="hero-image-label"><span>01 / THE GARDEN GATHERING</span><span>Made for your kind of magic ↗</span></div>
-        <div className="floating-note"><span className="note-spark">✳</span><span><b>Made for moments</b><small>big & beautifully small</small></span></div>
+        <Image className="hero-photo" src="/event-hero.jpg" alt="An elegant celebration hall set with round tables and gold chairs" fill priority sizes="(max-width: 720px) 100vw, 50vw" />
+        <div className="hero-image-label"><span>THE DETAILS MAKE THE DAY</span><span>Let’s bring yours together <i>↗</i></span></div>
       </div>
       <form className="discovery-bar" onSubmit={handleSearch}>
         <label className="discovery-field"><span className="discovery-icon">✳</span><span><small>WHAT ARE YOU PLANNING?</small><select value={kind} onChange={(event) => setKind(event.target.value as ListingKind | "all")}><option value="all">A little bit of everything</option><option value="rental">Rentals for my event</option><option value="venue">A lovely event space</option><option value="planning">Help planning my event</option></select></span></label>
@@ -175,14 +167,14 @@ export default function Storefront() {
         <label className="discovery-field guests-field"><span className="discovery-icon">♙</span><span><small>HOW MANY LOVELY PEOPLE?</small><select aria-label="Guest count" value={guestCount} onChange={(event) => setGuestCount(event.target.value)}><option value="">Any number of guests</option><option>Under 30</option><option>30–60 guests</option><option>60–100 guests</option><option>100+ guests</option></select></span></label>
         <button className="discover-button" type="submit">Find your thing <span>↗</span></button>
       </form>
-      <div className="hero-edge-note">THE RENTOS WAY <span>—</span> EASY DOES IT</div>
+      <div className="hero-edge-note">THE HSEVENTS WAY <span>—</span> EASY DOES IT</div>
     </section>
 
-    <div className="trust-strip"><span>Thoughtfully picked, never overwhelming</span><i>✳</i><span>Here when you need a hand</span><i>✳</i><span>Made for Lagos celebrations</span></div>
+    <div className="trust-strip"><span>Event rentals, venues & planning in one place</span><i>✳</i><span>Clear starting prices in NGN</span><i>✳</i><span>Enquire first, confirm availability with our team</span></div>
 
     <section className="collection-section page-section" id="collection">
       <div className="section-topline"><span className="eyebrow"><span /> A GOOD PLACE TO BEGIN</span><span className="section-index">01 — THE COLLECTION</span></div>
-      <div className="section-heading"><div><h2>For the host<br />with <em>heart.</em></h2></div><p>From the first chair to the last little detail, find the pieces that make a gathering yours. Pick a few favourites, and we’ll help with the rest.</p></div>
+      <div className="section-heading"><div><h2>Build your<br /><em>celebration.</em></h2></div><p>Explore event essentials, find a space, or add planning support. Prices are shown up front; add your favourites to a shortlist and ask us to confirm the details.</p></div>
       <div className="category-tabs" role="tablist" aria-label="Browse by category">
         {categories.map((category) => <button key={category.value} role="tab" aria-selected={kind === category.value} className={kind === category.value ? "selected" : ""} onClick={() => { setKind(category.value as ListingKind | "all"); setShowAll(category.value === "all"); if (category.value === "all") setGuestCount(""); }}><span>{category.icon}</span>{category.label}</button>)}
         <label className="collection-search"><span>⌕</span><input placeholder="Find something..." aria-label="Search catalogue" value={search} onChange={(event) => setSearch(event.target.value)} /></label>
@@ -199,7 +191,7 @@ export default function Storefront() {
     </section>
 
     <section className="spaces-section page-section" id="spaces">
-      <div className="spaces-intro"><span className="eyebrow light"><span /> YOUR PEOPLE, YOUR PLACE</span><h2>A lovely little<br /><em>place to gather.</em></h2><p>Just the right size, full of character, and ready for your people. Find your kind of space in the heart of Lagos.</p><button onClick={() => browse("venue")}>Find your space <span>↗</span></button><span className="spaces-mark">R / SPACES</span></div>
+      <div className="spaces-intro"><span className="eyebrow light"><span /> VENUES FOR YOUR OCCASION</span><h2>Find your<br /><em>place to gather.</em></h2><p>Compare venue styles, guest capacities and starting prices. Tell us your date and we’ll help check what’s available.</p><button onClick={() => browse("venue")}>Explore venues <span>↗</span></button><span className="spaces-mark">HSEVENTS / SPACES</span></div>
       <div className="spaces-cards">{listings.filter((item) => item.kind === "venue").slice(0, 2).map((listing, index) => <article className="space-card" key={listing.id}><ListingVisual listing={listing} large /><div className="space-card-details"><div><span>{listing.category} · {index === 0 ? "Up to 80 guests" : "Up to 35 guests"}</span><h3>{listing.name}</h3></div><button aria-label={`Add ${listing.name} to bag`} onClick={() => addToBag(listing)}>↗</button><p>{listing.description}</p><b>{formatNaira(listing.price)} <small>/ {listing.unit}</small></b></div></article>)}</div>
     </section>
 
@@ -212,22 +204,22 @@ export default function Storefront() {
 
     <section className="how-section page-section" id="how-it-works">
       <div className="section-topline"><span className="eyebrow"><span /> NICE AND SIMPLE</span><span className="section-index">03 — HOW IT WORKS</span></div>
-      <div className="how-heading"><h2>Good things,<br /><em>made easy.</em></h2><p>Think of us as your very organised friend who knows where to find the good chairs.</p></div>
-      <div className="steps-grid"><article><span className="step-num">01</span><span className="step-icon">⌕</span><h3>Find your favourites</h3><p>Browse lovely rentals and little spaces at your own pace. Save what catches your eye.</p></article><article><span className="step-num">02</span><span className="step-icon">✳</span><h3>Tell us the details</h3><p>Share your date, your plans and the bits you’re still figuring out. We’re all ears.</p></article><article><span className="step-num">03</span><span className="step-icon">♡</span><h3>Let’s make it lovely</h3><p>We’ll follow up to talk through availability and next steps. No surprises, ever.</p></article></div>
+      <div className="how-heading"><h2>From shortlist<br /><em>to celebration.</em></h2><p>Start with what you need. Our team can confirm availability and help you plan the next steps.</p></div>
+      <div className="steps-grid"><article><span className="step-num">01</span><span className="step-icon">⌕</span><h3>Browse & shortlist</h3><p>Choose rentals, spaces or planning support and add items to your bag.</p></article><article><span className="step-num">02</span><span className="step-icon">✳</span><h3>Share your event details</h3><p>Tell us the date, location and guest count so we can understand your requirements.</p></article><article><span className="step-num">03</span><span className="step-icon">♡</span><h3>Confirm with our team</h3><p>We’ll discuss availability, delivery and your quote before anything is booked.</p></article></div>
     </section>
 
-    <section className="closing-section" id="contact"><div className="closing-flower">✳</div><span className="eyebrow light">A GOOD DAY, IN THE MAKING</span><h2>So, what are we<br /><em>celebrating?</em></h2><p>Big wedding, tiny dinner, or something in between. We’d love to hear about it.</p><button onClick={() => { setBookingOpen(true); setSubmitted(false); }}>Tell us about your day <span>↗</span></button><span className="closing-note">A real person from Rentos will be happy to help.</span></section>
+    <section className="closing-section" id="contact"><div className="closing-flower">✳</div><span className="eyebrow light">A GOOD DAY, IN THE MAKING</span><h2>So, what are we<br /><em>celebrating?</em></h2><p>Big wedding, tiny dinner, or something in between. We’d love to hear about it.</p><button onClick={() => { setBookingOpen(true); setSubmitted(false); }}>Tell us about your day <span>↗</span></button><span className="closing-note">A real person from HSEvents will be happy to help.</span></section>
 
-    <footer className="site-footer"><a className="wordmark footer-wordmark" href="#"><span className="logo-mark">r<span>.</span></span><span>rentos<small>EVENTS & RENTALS</small></span></a><span className="footer-caption">For the days you’ll talk about for years.</span><div className="footer-right"><span>Lagos, Nigeria · WAT (UTC+1)</span><span>© 2026 Rentos Events</span></div></footer>
+    <footer className="site-footer"><a className="wordmark footer-wordmark" href="#" aria-label="HSEvents home"><Image className="wordmark-logo" src="/logo.jpeg" alt="" width={40} height={40} /><span>HSEvents<small>EVENTS & RENTALS</small></span></a><span className="footer-caption">For the days you’ll talk about for years.</span><div className="footer-right"><span>Lagos, Nigeria · WAT (UTC+1)</span><span>© 2026 HSEvents</span></div></footer>
     <div className="demo-disclaimer">DEMO STOREFRONT · Catalogue, prices and enquiries are illustrative only. No booking, message or payment is sent.</div>
 
     {toast && <div className="toast" role="status">✳ &nbsp;{toast}</div>}
     {bagOpen && <div className="scrim" onMouseDown={(event) => { if (event.target === event.currentTarget) setBagOpen(false); }}><aside className="bag-drawer" aria-label="Your bag"><div className="drawer-head"><div><span className="eyebrow"><span /> YOUR LITTLE LIST</span><h2>Your bag <small>({bagCount})</small></h2></div><button className="close-button" aria-label="Close bag" onClick={() => setBagOpen(false)}>×</button></div>
       {bagLines.length === 0 ? <div className="bag-empty"><span>♧</span><h3>A little room for something lovely.</h3><p>Your bag is empty for now. Browse the collection and add a few favourites.</p><button className="dark-button" onClick={() => { setBagOpen(false); browse("all"); }}>Explore the collection <span>↗</span></button></div> :
-        <><div className="bag-lines">{bagLines.map((listing) => <div className="bag-line" key={listing.id}><div className="bag-mini-visual"><ListingVisual listing={listing} /></div><div className="bag-line-copy"><span>{listing.category}</span><b>{listing.name}</b><small>{formatNaira(listing.price)} / {listing.unit}</small><div className="quantity"><button aria-label={`Remove one ${listing.name}`} onClick={() => changeQuantity(listing.id, -1)}>−</button><span>{bag[listing.id]}</span><button aria-label={`Add one ${listing.name}`} onClick={() => changeQuantity(listing.id, 1)}>＋</button></div></div><b className="line-total">{formatNaira(listing.price * bag[listing.id])}</b></div>)}</div><div className="bag-summary"><div><span>Illustrative subtotal</span><b>{formatNaira(bagSubtotal)}</b></div><small>Final quote, availability and delivery are confirmed with the Rentos team.</small><button className="dark-button" onClick={() => { setBagOpen(false); setBookingOpen(true); setSubmitted(false); }}>Ask about these items <span>↗</span></button></div></>}
+        <><div className="bag-lines">{bagLines.map((listing) => <div className="bag-line" key={listing.id}><div className="bag-mini-visual"><ListingVisual listing={listing} /></div><div className="bag-line-copy"><span>{listing.category}</span><b>{listing.name}</b><small>{formatNaira(listing.price)} / {listing.unit}</small><div className="quantity"><button aria-label={`Remove one ${listing.name}`} onClick={() => changeQuantity(listing.id, -1)}>−</button><span>{bag[listing.id]}</span><button aria-label={`Add one ${listing.name}`} onClick={() => changeQuantity(listing.id, 1)}>＋</button></div></div><b className="line-total">{formatNaira(listing.price * bag[listing.id])}</b></div>)}</div><div className="bag-summary"><div><span>Illustrative subtotal</span><b>{formatNaira(bagSubtotal)}</b></div><small>Final quote, availability and delivery are confirmed with the HSEvents team.</small><button className="dark-button" onClick={() => { setBagOpen(false); setBookingOpen(true); setSubmitted(false); }}>Ask about these items <span>↗</span></button></div></>}
     </aside></div>}
 
-    {bookingOpen && <div className="scrim modal-scrim" onMouseDown={(event) => { if (event.target === event.currentTarget) setBookingOpen(false); }}><section className="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enquiry-heading"><button className="close-button modal-close" aria-label="Close enquiry" onClick={() => setBookingOpen(false)}>×</button>{submitted ? <div className="success-state"><span>✳</span><div className="eyebrow"><span /> JUST BETWEEN US (DEMO)</div><h2>Your note is<br /><em>right here.</em></h2><p>{enquiryName ? `Thanks, ${enquiryName}. ` : ""}{enquiryEvent ? `Your ${enquiryEvent.toLowerCase()} enquiry ` : "Your enquiry "}is shown as a local demo preview only. Nothing has been sent, reserved, or charged. In the real Rentos experience, our team would be in touch to chat through your day.</p><button className="dark-button" onClick={() => { setBookingOpen(false); setSubmitted(false); }}>Back to the good stuff <span>↗</span></button></div> :
+    {bookingOpen && <div className="scrim modal-scrim" onMouseDown={(event) => { if (event.target === event.currentTarget) setBookingOpen(false); }}><section className="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enquiry-heading"><button className="close-button modal-close" aria-label="Close enquiry" onClick={() => setBookingOpen(false)}>×</button>{submitted ? <div className="success-state"><span>✳</span><div className="eyebrow"><span /> JUST BETWEEN US (DEMO)</div><h2>Your note is<br /><em>right here.</em></h2><p>{enquiryName ? `Thanks, ${enquiryName}. ` : ""}{enquiryEvent ? `Your ${enquiryEvent.toLowerCase()} enquiry ` : "Your enquiry "}is shown as a local demo preview only. Nothing has been sent, reserved, or charged. In the real HSEvents experience, our team would be in touch to chat through your day.</p><button className="dark-button" onClick={() => { setBookingOpen(false); setSubmitted(false); }}>Back to the good stuff <span>↗</span></button></div> :
         <><div className="eyebrow"><span /> LET’S START WITH A HELLO</div><h2 id="enquiry-heading">Tell us about<br /><em>your day.</em></h2><p className="modal-intro">A few details are plenty. We’ll keep it easy.</p><form className="enquiry-form" onSubmit={handleEnquiry}><label>Your name<input name="name" required placeholder="The name we should use" /></label><div className="form-pair"><label>Email address<input type="email" name="email" required placeholder="you@example.com" /></label><label>Phone number<input type="tel" name="phone" required placeholder="+234" /></label></div><div className="form-pair"><label>What are you planning?<select name="event" defaultValue=""><option value="" disabled>Choose one</option><option>Wedding or engagement</option><option>Birthday or anniversary</option><option>Intimate dinner</option><option>Corporate gathering</option><option>Something else</option></select></label><label>Event date<input type="date" name="date" value={eventDate} onChange={(event) => setEventDate(event.target.value)} /></label></div><label>A little more about it <span className="optional">(optional)</span><textarea name="notes" rows={3} placeholder="Guest count, rentals you liked, or anything on your mind..." defaultValue={bagLines.length ? `I'd love to ask about: ${bagLines.map((item) => `${bag[item.id]} × ${item.name}`).join(", ")}.` : ""} /></label><div className="demo-form-note">DEMO ONLY · Details stay in this page and are not sent anywhere.</div><button className="dark-button submit-button" type="submit">Save demo enquiry <span>↗</span></button></form></>}
     </section></div>}
   </main>;
